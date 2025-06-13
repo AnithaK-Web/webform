@@ -1,1 +1,56 @@
+<script src='https://oldmoney6.myfreshworks.com/crm/sales/web_forms/4303df1e7b49553fc1727aecc3b7e627b5233daaa70856c9073ae919ab451bad/form.js' crossorigin='anonymous' id='fs_4303df1e7b49553fc1727aecc3b7e627b5233daaa70856c9073ae919ab451bad'></script>
+<script>
+(function () {
+  console.log("Injecting last name validator...");
+
+  function validateLastName(lastNameField, submitButton) {
+    lastNameField.addEventListener('input', function () {
+      const lastName = lastNameField.value.trim();
+      if (lastName.length < 2) {
+        lastNameField.setCustomValidity('Last name must be at least 2 characters.');
+        submitButton.disabled = true;
+        console.log("Invalid last name:", lastName);
+      } else {
+        lastNameField.setCustomValidity('');
+        submitButton.disabled = false;
+        console.log("Valid last name:", lastName);
+      }
+      lastNameField.reportValidity();
+    });
+  }
+
+  function setupLastNameValidation() {
+    const lastNameField = document.querySelector('input[name="contact[last_name]"]');
+    if (lastNameField) {
+      console.log("Last name field found:", lastNameField);
+      const form = lastNameField.closest('form');
+      if (form) {
+        const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+        if (submitButton) {
+          validateLastName(lastNameField, submitButton);
+          if (lastNameField.value.trim().length < 2) {
+            submitButton.disabled = true;
+          }
+          form.addEventListener('submit', function (event) {
+            if (!lastNameField.checkValidity()) {
+              console.log("Form submission blocked due to invalid last name.");
+              event.preventDefault();
+            } else {
+              console.log("Form submitted successfully.");
+            }
+          });
+        }
+      }
+    } else {
+      console.warn("Last name input not found.");
+    }
+  }
+
+  // Wait a bit in case elements are still loading
+  setTimeout(setupLastNameValidation, 1000);
+})();
+</script>
+
+
+
 
